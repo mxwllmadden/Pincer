@@ -41,7 +41,9 @@ class CurrentInducedAP(PincerAnalysis):
     
 def detectAP(sweep):
     aps = []
-    #detect every region where 
+    threshold = -20
+    #detect every region where trace exceeds threshold
+    regions = bwlabel(sweep>=threshold)
     return aps
 
 def baseline(sweep,baseline : tuple):
@@ -51,7 +53,7 @@ def baseline(sweep,baseline : tuple):
 def bwlabel(sweep):
     count = 0
     state = False
-    sweepout = np.empty(len(sweep))
+    sweepout = np.empty(len(sweep),dtype=int)
     for x in range(len(sweep)):
         if sweep[x] == True and state == False:
             count += 1
@@ -62,5 +64,5 @@ def bwlabel(sweep):
             sweepout[x] = 0
         if sweep[x] == True and state == True:
             sweepout[x] = count
-    return sweep
+    return sweepout
         

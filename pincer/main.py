@@ -14,7 +14,9 @@ class CellDex():
     def __init__(self,source):
         self.source = Path(source)
         self.analysis_queue = {}
+        self._initiateDataFrames()
         
+    def _initiateDataFrames(self):
         rowmultiindex = pandas.MultiIndex(levels = [[],[],[]],
                                           codes = [[],[],[]],
                                           names = [u'Day',u'Slice',u'Cell'])

@@ -32,7 +32,7 @@ class CurrentInducedAP(ban.PincerAnalysis):
         for i in range(abf.sweepCount):
             #required to include
             abf.setSweep(i)
-            trace = abf.sweepX
+            trace = abf.sweepY
             
             #perform required calculations
             apindexs = ban.detectAP(trace)
@@ -49,8 +49,6 @@ class CurrentInducedAP(ban.PincerAnalysis):
         results['Action Potential Count'] = sts.mean(apnumber)
         results['First Action Potential Peak'] = sts.mean(appeak)
         results['First Action Potential Height'] = sts.mean(apheight)
-        results['Time of Day'] = abf.timeofday
-        results['Time of Day (str)'] = abf.timeofday_str
         return results
         
 
@@ -64,12 +62,11 @@ class CRACM(ban.PincerAnalysis):
         results = {}
         apsPerLP = []
         auc = []
-        
         #iterate across each sweep
         for i in range(abf.sweepCount):
             #required to include
             abf.setSweep(i)
-            trace = abf.sweepX
+            trace = abf.sweepY
             
             #perform required calculations
             apindexs = ban.detectAP(trace)
@@ -85,15 +82,51 @@ class CRACM(ban.PincerAnalysis):
         return results
     
 class Rheoramp(ban.PincerAnalysis):
-    def __init__(self, baseline: tuple = (1,200)):
-        pass
+    def __init__(self, baseline: tuple = (1,200), ramptimepoints = (800,8800), rampmaxcurr_pA = 25):
+        self.baseline = baseline
+        self.ramptimepoints = ramptimepoints
+        self.rampmaxcurr_pA = rampmaxcurr_pA
     
     def run (self,abf):
-        pass
+        #Create results and define working variables
+        results = {}
+        rheobase = []
+        apthresh = []
+        rheobase = []
+        
+        #iterate across each sweep
+        for i in range(abf.sweepCount):
+            #required to include
+            abf.setSweep(i)
+            trace = abf.sweepY
+            
+            #perform required calculations
+            apindexs = ban.detectAP(trace)
+            if len(apindexs) > 0:
+                apindexs = list(apindexs)
+                apindexs.sort()
+                trunc_trace = trace[0:apindexs[0]+1]
+                trunc_trace_jerk = np.gradient(np.gradient(trunc_trace))
+                indx = int(np.argmax(trunc_trace_jerk))
+                #calculate rheobase and apthresh
+                apthresh.append(int(trace[indx]))
+                rheo = (indx-self.ramptimepoints[0]) * \
+                    (self.rampmaxcurr_pA / (self.ramptimepoints[1] - \
+                                            self.ramptimepoints[0]))
+                rheobase.append(int(rheo))
+            results['AP Threshold'] = sts.mean(apthresh)
+            results['Rheobase (pA)'] = sts.mean(rheobase)
+            return results                
     
 class CheckSealStep(ban.PincerAnalysis):
-    def __init__(self,baseline : tuple = (1,2000)):
+    def __init__(self,baseline : tuple = (1,500)):
         pass
     
     def run(self, abf):
-        pass
+        # Create results and define working variables
+        results = {}
+        results['Time of Day'] = abf.timeofday
+        results['Time of Day (str)'] = abf.timeofday_str
+        return {}
+        
+        

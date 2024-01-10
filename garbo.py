@@ -5,15 +5,14 @@ Created on Tue Nov 21 14:31:54 2023
 @author: mbmad
 """
 import numpy as np
+import pathlib
+import os
 
-def testmultiout(x : int):
-    assert isinstance(x, np.ndarray)
-    print(x)
-    return 1
+class bingo():
+    def __init__(self):
+        self.me = ['bingo']
+    def __add__(self,bango):
+        return bingo()
 
 if __name__ == "__main__":
-    x = np.array([1,2,3])
-    testmultiout(x)
-    x = 1
-    testmultiout(x)
-
+    featureframe.apply(eat,axis = 1)

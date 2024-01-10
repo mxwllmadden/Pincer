@@ -5,16 +5,42 @@ Contains the analysis for each protocol, outputs can be suppressed if needed
 """
 import numpy as np
 
+class StatsManager():
+    _registry = {}
+    def __init__(self):
+        pass
+    
+    def make(self,name,**kwargs):
+        return self._registry[name](**kwargs)
+    
+    def report(self):
+        print('Available Comparisons:')
+        print('-------------------')
+        for i in self._registry:
+            print(i)
+
 class AnalysisManager():
     _registry = {}
     def __init__(self):
+        pass
+    
+    def make(self,name,**kwargs):
+        return self._registry[name](**kwargs)
+    
+    def report(self):
         print('Available Analyses:')
         print('-------------------')
         for i in self._registry:
             print(i)
-    
-    def get(self,name,**kwargs):
-        return self._registry[name](**kwargs)
+            
+class PincerComparison():
+    def __init_subclass__(cls,**kwargs):
+        super().__init_subclass__(**kwargs)
+        StatsManager._registry[cls.__name__] = cls
+        
+    def run(self, *series):
+        print('Warning! Missing Run Method!')
+        return {'ERROR1':1,'ERROR2':2}
     
 class PincerAnalysis():
     def __init_subclass__(cls,**kwargs):
@@ -26,13 +52,6 @@ class PincerAnalysis():
         return {'ERROR1':1,'ERROR2':2}
 
 class Template(PincerAnalysis):
-    def __init__(self, **kwargs):
-        pass
-    
-    def run(self, ABF):
-        pass
-    
-class CurrentInducedAP(PincerAnalysis):
     def __init__(self, **kwargs):
         pass
     
@@ -75,9 +94,9 @@ def baseline(sweep,baseline : tuple):
 
     """
     assert isinstance(sweep, np.ndarray) and sweep.ndim == 1, 'sweep is not a 1-d numpy array'
-    assert isinstance(baseline, tuple) and len(baseline) == 2 'baseline is not a length 2 tuple'
-    assert all([x<=len(sweep) and x >= 0 for x in baseline]) 'baseline indexes not contained in sweep'
-    assert baseline[0] <= baseline[1] 'baseline indexes in incorrect order'
+    assert isinstance(baseline, tuple) and len(baseline) == 2, 'baseline is not a length 2 tuple'
+    assert all([x<=len(sweep) and x >= 0 for x in baseline]), 'baseline indexes not contained in sweep'
+    assert baseline[0] <= baseline[1], 'baseline indexes in incorrect order'
     base = np.average(sweep[baseline[0]:baseline[1]])
     sweep = np.subtract(sweep, base)
     return sweep, int(base)

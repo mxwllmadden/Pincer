@@ -9,7 +9,7 @@ import pincer
 import pincer.analysis_custom.cracm
 
 mydata = pincer.CellDex(r'C:\Users\mbmad\OneDrive - University of Maryland School of Medicine\Documents\MATHURLAB DATA AND PROJECTS\Patch Data Archive\Data')
-mydata.import_formattedexcel('celldex_24hr_1mgkg_psilo_inj.xlsx')
+mydata.import_formattedexcel('celldex_24hr_1mgkg_psilo_inj (2).xlsx')
 
 analysis = pincer.AnalysisManager()
 ap1 = analysis.make('CurrentInducedAP')

@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['example.py', 'Analysis_30min_1mgkg_psilo_1bantagonistorcontrol.py', 'garbo.py', 'pincer\\main.py', 'pincer\\analysis_base.py', 'pincer\\__init__.py', 'pincer\\comparisons_stock.py', 'pincer\\analysis_custom\\cracm.py', 'pincer\\analysis_custom\\__init__.py']
+recent_files = ['Analysis_30min_1mgkg_psilo_1bantagonistorcontrol.py', 'garbo.py', 'pincer\\main.py', 'pincer\\analysis_base.py', 'pincer\\__init__.py', 'pincer\\comparisons_stock.py', 'pincer\\analysis_custom\\cracm.py', 'pincer\\analysis_custom\\__init__.py', 'Analysis_24hr_1mgkg_psilo_inj.py']
 
 [main]
 version = 0.2.0

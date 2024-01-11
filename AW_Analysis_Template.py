@@ -17,7 +17,7 @@ class AWCellDex(pincer.CellDex):
         return d + i.zfill(4) + '.abf'
 
 mydata = pincer.CellDex(r'C:\Users\mbmad\OneDrive - University of Maryland School of Medicine\Documents\MATHURLAB DATA AND PROJECTS\Patch Data Archive\Data')
-mydata.import_formattedexcel('celldex_24hr_1mgkg_psilo_inj (2).xlsx')
+mydata.import_formattedexcel(r'celldex_24hr_1mgkg_psilo_inj (2).xlsx')
 
 analysis = pincer.AnalysisManager()
 rheo = analysis.make('Rheoramp')
@@ -25,3 +25,5 @@ rheo = analysis.make('Rheoramp')
 mydata.queue_analysis(1, rheo)
 
 mydata.process(report=True)
+
+mydata.export_formattedexcel(r'celldex_postprocess_24hr_1mgkg_psilo_inj.xlsx')

@@ -9,7 +9,7 @@ import statistics as sts
 import numpy as np
 
 class Peaks(ban.PincerAnalysis):    
-    def __init__(self,baseline : tuple = (1,2000), ranges : list = [(2400,3000)]):
+    def __init__(self,baseline : tuple = (1,2000), ranges : list = [(2400,3000)], peakdir = 1):
         """
         Find peak magnitude over specified regions with baselining
 
@@ -27,6 +27,7 @@ class Peaks(ban.PincerAnalysis):
         """
         self.baseline = baseline
         self.ranges = ranges
+        self.peakdir = peakdir
         
     def run(self,abf):
         #Create results and define working variables
@@ -44,5 +45,10 @@ class Peaks(ban.PincerAnalysis):
                 bl_trace, bl = ban.baseline(trace, self.baseline)
                 
                 #generate results
-                results['Peak ' + str(r) + ' sweep ' + str(i)] = np.max(bl_trace[self.ranges[r][0]:self.ranges[r][1]])
+                if self.peakdir == 1:
+                    results['Peak ' + str(r) + ' sweep ' + str(i)] = \
+                        np.max(bl_trace[self.ranges[r][0]:self.ranges[r][1]])
+                if self.peakdir == -1:
+                    results['Peak ' + str(r) + ' sweep ' + str(i)] = \
+                        np.min(bl_trace[self.ranges[r][0]:self.ranges[r][1]])
         return results

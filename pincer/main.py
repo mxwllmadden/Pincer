@@ -63,7 +63,7 @@ class CellDex():
         self.secondary_ops_queue.append(op)
         
     def process(self, report = False):
-        if report == True: print('This may take a while...')
+        print('This may take a while...')
         for analysis in self.analysis_queue.keys():
             if report == True: print('Performing '+ type(self.analysis_queue[analysis]).__name__ + 'analysis')
             for index, row in self.traceIndex[analysis].iterrows(): #Dataframe with only relevant analyses
@@ -92,7 +92,7 @@ class CellDex():
             self.results['SecondaryOutputs',op['outputname']] = featureframe.apply(op['func'], axis = 1)
         if report == True: print('Calculating Animalwise Measures!')
         self.animalresults = self.results.groupby(level=0,axis=0).mean()
-        if report == True: print('Done!')
+        print('Done!')
         
 def cmbABFnm(daycode,index):
     d = str(daycode)

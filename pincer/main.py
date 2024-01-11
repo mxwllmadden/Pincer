@@ -95,7 +95,7 @@ class CellDex():
                         #name is the name of the protocol
                         #code is the code for the recording
                         if str(code) != 'nan':
-                            file = cmbABFnm(index[0], code)
+                            file = self.cmbABFnm(index[0], code)
                             if report == True: print('processing ',file)
                             filepath = PurePath(self.source, Path(file))
                             try:
@@ -118,9 +118,9 @@ class CellDex():
         else:
             print('Processing aborted due to reported failed check')
         
-def cmbABFnm(daycode,index):
-    d = str(daycode)
-    i = str(index)
-    i = i.partition('.')[0]
-    i = i.rjust(3,'0')
-    return d + i.zfill(3) + '.abf'
+    def cmbABFnm(self,daycode,index):
+        d = str(daycode)
+        i = str(index)
+        i = i.partition('.')[0]
+        i = i.rjust(3,'0')
+        return d + i.zfill(3) + '.abf'

@@ -18,6 +18,6 @@ sealtest = analysis.make('Peaks', baseline = (4500,4800), ranges = [(4850,4950)]
 mydata.queue_analysis(0, pairedpulse)
 mydata.queue_analysis(1, sealtest)
 
-mydata.process(report = True)
+mydata.process(report = True, check = True)
 
 mydata.export_formattedexcel(r'celldex_postprocess_Alli_MRK.xlsx')

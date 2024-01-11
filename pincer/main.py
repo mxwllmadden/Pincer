@@ -62,37 +62,61 @@ class CellDex():
         op['func'] = function
         self.secondary_ops_queue.append(op)
         
-    def process(self, report = False):
-        print('This may take a while...')
-        for analysis in self.analysis_queue.keys():
-            if report == True: print('Performing '+ type(self.analysis_queue[analysis]).__name__ + 'analysis')
-            for index, row in self.traceIndex[analysis].iterrows(): #Dataframe with only relevant analyses
-                #index is the index of the specific row, ROW is the series
-                for name, code in row.items():
-                    #index is the cell index
-                    #name is the name of the protocol
-                    #code is the code for the recording
-                    if str(code) != 'nan':
-                        file = cmbABFnm(index[0], code)
-                        if report == True: print('processing ',file)
-                        filepath = PurePath(self.source, Path(file))
-                        try:
-                            abf = PincerABF(str(filepath))
-                        except ValueError:
-                            print("missing file:"+file)
-                        else:
-                            resultdict = self.analysis_queue[analysis].run(abf)
-                            del abf
-                            for result in resultdict.keys():
-                                self.results.loc[index,(name,result)] = resultdict[result]
-        if report == True: print('Calculating Secondary Measures')
-        for op in self.secondary_ops_queue:
-            features = [self.results[*i] for i in op['inputIDs']]
-            featureframe = pandas.concat(features,axis = 1)
-            self.results['SecondaryOutputs',op['outputname']] = featureframe.apply(op['func'], axis = 1)
-        if report == True: print('Calculating Animalwise Measures!')
-        self.animalresults = self.results.groupby(level=0,axis=0).mean()
-        print('Done!')
+    def check(self):
+        """
+        Process through all trace files, checking their
+            Length
+            Sampling Rate
+            Number of Sweeps
+            Epoch
+            Source Protocol Name
+            If trace exceeds expected bounds
+        To see if different from other traces (minority groupings are reported)
+        
+        check WILL NOT catch bad data, only help identify where incorrect files
+        have been entered.
+        """
+        pass
+        """Needs to be written!"""
+        
+        
+    def process(self, report = False, check = False):
+        go = True
+        if check == True:
+            go = self.check()
+        if go == True:
+            print('This may take a while...')
+            for analysis in self.analysis_queue.keys():
+                if report == True: print('Performing '+ type(self.analysis_queue[analysis]).__name__ + 'analysis')
+                for index, row in self.traceIndex[analysis].iterrows(): #Dataframe with only relevant analyses
+                    #index is the index of the specific row, ROW is the series
+                    for name, code in row.items():
+                        #index is the cell index
+                        #name is the name of the protocol
+                        #code is the code for the recording
+                        if str(code) != 'nan':
+                            file = cmbABFnm(index[0], code)
+                            if report == True: print('processing ',file)
+                            filepath = PurePath(self.source, Path(file))
+                            try:
+                                abf = PincerABF(str(filepath))
+                            except ValueError:
+                                print("missing file:"+file)
+                            else:
+                                resultdict = self.analysis_queue[analysis].run(abf)
+                                del abf
+                                for result in resultdict.keys():
+                                    self.results.loc[index,(name,result)] = resultdict[result]
+            if report == True: print('Calculating Secondary Measures')
+            for op in self.secondary_ops_queue:
+                features = [self.results[*i] for i in op['inputIDs']]
+                featureframe = pandas.concat(features,axis = 1)
+                self.results['SecondaryOutputs',op['outputname']] = featureframe.apply(op['func'], axis = 1)
+            if report == True: print('Calculating Animalwise Measures!')
+            self.animalresults = self.results.groupby(level=0,axis=0).mean()
+            print('Done!')
+        else:
+            print('Processing aborted due to reported failed check')
         
 def cmbABFnm(daycode,index):
     d = str(daycode)

@@ -42,7 +42,7 @@ class PincerComparison():
         return {'ERROR1':1,'ERROR2':2}
     
 class PincerAnalysis():
-    def __init_subclass__(cls,**kwargs):
+    def __init_subclass__(cls,**kwargs):        
         super().__init_subclass__(**kwargs)
         AnalysisManager._registry[cls.__name__] = cls
         

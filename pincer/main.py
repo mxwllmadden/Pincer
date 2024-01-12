@@ -11,10 +11,83 @@ from pincer.analysis_base import AnalysisManager
 from pincer.abfHelper import PincerABF
 from pincer.analysis_base import StatsManager
 import pincer.comparisons_stock
-        
 
-class CellDex():
-    def __init__(self,source,padfilename = 0):
+class ROI():
+    _defaultunits = {'us': 1,'ms':1000,'s':1000000,'sec':1000000,'min':60000000}
+    def __init__(self,region,unit = 'ms'):
+        self._units = self._defaultunits
+        assert unit in self._units.keys(), 'invalid unit, use one of: '+', '.join(list(self._units.keys()))
+        assert type(region) == tuple or type(region) == list, 'regions must be defined as a tuple or list of tuples'
+        if type(region) == tuple: region = [region]
+        
+        assert all([type(x) == tuple for x in region]), 'ranges must be tuples'
+        for i in region:
+            assert all([type(x) == int for x in i]), 'start and end of range must be int'
+            assert len(i) == 2, 'ranges may only be defined as (start,end)'
+            
+        self.region = region
+        self._mergeranges()
+        self.unit = unit
+        
+    def filt(self,trace):
+        assert type(trace) == np.ndarray, 'trace must be numpy.ndarray'
+        arrays = [trace[s:e] for s, e in self.region]
+        return np.concatenate(arrays)
+        
+    def samplcnv(self,hz):
+        assert hz < 100000, 'ROI cannot handle sample rates higher than 100khz'
+        self._units['samples'] = int(1/(hz/1000000))
+        self.convertunit('samples')
+        return self
+        
+    def _mergeranges(self):
+        result = []
+        for i in sorted(self.region):
+            result = result or [i]
+            if i[0] >= result[-1][1]:
+                result.append(i)
+            else:
+                old = result[-1]
+                result[-1] = (old[0], max(old[1], i[1]))
+        self.region = result
+    
+    def convertunit(self,unit):
+        assert unit in self._units.keys(), 'invalid unit, use one of: '+', '.join(list(self._units.keys())) 
+        self.region = [tuple([i*self._units[self.unit]//self._units[unit] for i in y]) for y in self.region]
+        self.unit = unit
+        
+    def _makefriendlywith(self,new):
+        newunit = min(self._units[self.unit],new._units[new.unit])
+        x = self._units | new._units
+        lookup = {v:k for k,v in x.items()}
+        if self._units[self.unit] != newunit: self.convertunit(lookup[newunit])
+        if new._units[new.unit] != newunit: new.convertunit(lookup[newunit])
+    
+    def __add__(self, new):
+        self._makefriendlywith(new)
+        result = self.region + new.region
+        return ROI(result, unit = self.unit)
+    
+    def __sub__(self,new):
+        pass
+    
+    def __iter__(self):
+        self._itcurr = -1
+        self._itmax = len(self.region)
+        return self
+    
+    def __next__(self):
+        if self._itcurr < self._itmax-1:
+            self._itcurr += 1
+            return self.region[self._itcurr]
+        else:
+            raise StopIteration
+    
+    def __repr__(self):
+        return 'Pincer Range of Interest (ROI) including ' + ' '.join(str(x) for x in self.region).replace('(','[') + ' in unit (' + self.unit + ')'    
+
+class Pincer():
+    def __init__(self,source,padfilename = 3):
         # Setup dataframes
         self.source = Path(source)
         self._initiateDataFrames()
@@ -78,7 +151,7 @@ class CellDex():
         check WILL NOT catch bad data, only help identify where incorrect files
         have been entered.
         """
-        pass
+        return True
         """Needs to be written!"""
         
         

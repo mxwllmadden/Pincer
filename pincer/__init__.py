@@ -9,3 +9,4 @@ from pincer.main import CellDex
 from pincer.main import AnalysisManager
 from pincer.main import StatsManager
 from pincer.main import PincerABF
+from pincer.main import ROI

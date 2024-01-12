@@ -11,6 +11,7 @@ from pincer.analysis_base import AnalysisManager
 from pincer.abfHelper import PincerABF
 from pincer.analysis_base import StatsManager
 import pincer.comparisons_stock
+        
 
 class CellDex():
     def __init__(self,source):

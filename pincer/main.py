@@ -14,10 +14,11 @@ import pincer.comparisons_stock
         
 
 class CellDex():
-    def __init__(self,source):
+    def __init__(self,source,padfilename = 0):
         # Setup dataframes
         self.source = Path(source)
         self._initiateDataFrames()
+        self.padfilename = padfilename
         
         # Setup analysis, secondary measures, and secondary frames.
         self.analysis_queue = {}
@@ -123,5 +124,5 @@ class CellDex():
         d = str(daycode)
         i = str(index)
         i = i.partition('.')[0]
-        i = i.rjust(3,'0')
-        return d + i.zfill(3) + '.abf'
+        i = i.rjust(self.padfilename,'0')
+        return d + i.zfill(self.padfilename) + '.abf'

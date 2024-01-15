@@ -15,10 +15,13 @@ class PeakMagnitude(ban.PincerAnalysis):
     def __init__(self, region = None, baseline = None, direction : int = -1, binning : int = 0):
         assert type(region) == ROI or type(region) == type(None), 'region must be pincer.ROI'
         assert type(baseline) == type(None) or type(baseline) == ROI, 'baseline must be None or Pincer.ROI'
+        assert direction == 1 or direction == -1, 'direction must be 1 or -1'
+        assert type(binning) == int and binning >= 0, 'binning must be int equal or greater to zero'
         self.baseline = baseline
         self.region = region
         self.direction = direction
         self.binning = binning
+        
     def run(self,abf):
         #Create Results Dict and working variables
         results = {}
@@ -51,10 +54,13 @@ class AreaUnderCurve(ban.PincerAnalysis):
     def __init__(self, region = None, baseline = None, direction : int = -1, binning : int = 0):
         assert type(region) == ROI or type(region) == type(None), 'region must be pincer.ROI'
         assert type(baseline) == type(None) or type(baseline) == ROI, 'baseline must be None or Pincer.ROI'
+        assert direction == 1 or direction == -1, 'direction must be 1 or -1'
+        assert type(binning) == int and binning >= 0, 'binning must be int equal or greater to zero'
         self.baseline = baseline
         self.region = region
         self.direction = direction
         self.binning = binning
+        
     def run(self,abf):
         #Create Results Dict and working variables
         results = {}
@@ -89,12 +95,15 @@ class CountThresholdEvents(ban.PincerAnalysis):
     def __init__(self, region = None, baseline = None, threshold = 0, direction : int = -1, binning : int = 0, min_eventwidth_ms = 1):
         assert type(region) == ROI or type(region) == type(None), 'region must be pincer.ROI'
         assert type(baseline) == type(None) or type(baseline) == ROI, 'baseline must be None or Pincer.ROI'
+        assert type(threshold) == int or type(threshold) == float, 'threshold must be int or float'
+        assert type(binning) == int or binning >= 0, 'Binning must be int >= 0'
         self.baseline = baseline
         self.region = region
         self.direction = direction
         self.binning = binning
         self.threshold = threshold
         self.min_eventwidth_ms = min_eventwidth_ms
+        
     def run(self,abf):
         #Create Results Dict and working variables
         results = {}

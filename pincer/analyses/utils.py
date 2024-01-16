@@ -6,6 +6,7 @@ Created on Thu Jan 11 16:20:37 2024
 """
 import numpy as np
 import statistics as sts
+from pincer import ROI
 
 def baseline(sweep,baseline):
     base = np.average(baseline.filt(sweep))
@@ -76,3 +77,12 @@ def binning(values : list, binning, func):
     if binning == 0: binnedvalues.append(func(values))
     else: binnedvalues = [func(x) for x in zip(*[iter(values)] * binning)]
     return binnedvalues
+
+def confirmROI(value):
+    if type(value) == ROI:
+        return value
+    else:
+        assert type(value) == tuple, 'input must be tuple, None, or ROI'
+        assert len(value) == 2, 'tuple must have length 2'
+        assert all(type(i) == int for i in value)
+        return ROI(value)

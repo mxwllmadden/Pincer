@@ -17,11 +17,11 @@ class PeakMagnitude(ban.PincerAnalysis):
         assert type(baseline) == type(None) or type(baseline) == ROI, 'baseline must be None or Pincer.ROI'
         assert direction == 1 or direction == -1, 'direction must be 1 or -1'
         assert type(binning) == int and binning >= 0, 'binning must be int equal or greater to zero'
-        self.baseline = baseline
-        self.region = region
+        self.baseline = util.confirmROI(baseline)
+        self.region = util.confirmROI(region)
         self.direction = direction
         self.binning = binning
-        
+    
     def run(self,abf):
         #Create Results Dict and working variables
         results = {}
@@ -56,8 +56,8 @@ class AreaUnderCurve(ban.PincerAnalysis):
         assert type(baseline) == type(None) or type(baseline) == ROI, 'baseline must be None or Pincer.ROI'
         assert direction == 1 or direction == -1, 'direction must be 1 or -1'
         assert type(binning) == int and binning >= 0, 'binning must be int equal or greater to zero'
-        self.baseline = baseline
-        self.region = region
+        self.baseline = util.confirmROI(baseline)
+        self.region = util.confirmROI(region)
         self.direction = direction
         self.binning = binning
         
@@ -97,8 +97,8 @@ class CountThresholdEvents(ban.PincerAnalysis):
         assert type(baseline) == type(None) or type(baseline) == ROI, 'baseline must be None or Pincer.ROI'
         assert type(threshold) == int or type(threshold) == float, 'threshold must be int or float'
         assert type(binning) == int or binning >= 0, 'Binning must be int >= 0'
-        self.baseline = baseline
-        self.region = region
+        self.baseline = util.confirmROI(baseline)
+        self.region = util.confirmROI(region)
         self.direction = direction
         self.binning = binning
         self.threshold = threshold

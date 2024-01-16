@@ -24,3 +24,5 @@ class CRACM_Current_LightPulse(ban.PincerAnalysis):
         APLP = {k:(v/(abf.sweepNumber*self.lightpulsespertrace)) for k, v in APLP.items()}
         return AUCResults | APLP
     
+class CRACM_
+    

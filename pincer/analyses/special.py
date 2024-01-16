@@ -12,13 +12,13 @@ import numpy as np
 
 class Current_Basic_Rheoramp(ban.PincerAnalysis):
     def __init__(self, apthreshold = -20, binning = 0):
-        self.baseline = baseline
+        assert type(apthreshold) == float or type(apthreshold) == int, 'apthreshold must be int or float'
+        assert type(binning) == int and binning >= 0, 'binning must be int >= 0'
         self.apthreshold = apthreshold
     def run (self,abf):
         #Create results and define working variables
         results = {}
         apthresh = []
-        apthresh_binned = []
         
         #iterate across each sweep
         for i in range(abf.sweepCount):
@@ -46,7 +46,7 @@ class Current_Basic_Rheoramp(ban.PincerAnalysis):
         
 class Current_Steps_MaxFiring(ban.PincerAnalysis):
     def __init__(self, stepregion, binning = 0):
-        self.stepregion = stepregion
+        self.stepregion = util.confirmROI(stepregion)
     def run(self, abf):
         #Create results and define working variables
         results = {}
@@ -73,3 +73,25 @@ class Current_Steps_MaxFiring(ban.PincerAnalysis):
         #create results dict
         results = {'Mean AP Count, Bin:'+str(i)+' (mV)':apcount[i] for i in range(len(apcount))}
         return results
+    
+class Voltage_Step_CheckSeal(ban.PincerAnalysis):
+    def __init__(self,baseline,region,stepsize_mV = 5):
+        self.baseline = util.confirmROI(baseline)
+        self.region = util.confirmROI(region)
+        assert type(stepsize_mV) == int, 'stepsize_mV must be int'
+    def run(self, abf):
+        #create results and define working variables
+        results = {}
+        cm = []
+        
+        #convert all ROI to sample units
+        hz = abf.sampleRate
+        if self.baseline != None: self.baseline.samplcnv(hz)
+        if self.region != None: self.baseline.samplcnv(hz)
+        
+        #Iterate across each sweep
+        for i in range(abf.sweepCount):
+            abf.setSweep(i)
+            trace = abf.sweepY
+            #filtering the trace should isolate a fittable curve
+            

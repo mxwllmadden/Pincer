@@ -127,8 +127,8 @@ class Pincer():
         expfile.close()
         del expfile 
     
-    def queue_analysis(self,index,method):
-        self.analysis_queue[index] = method
+    def queue_analysis(self,index,analysis):
+        self.analysis_queue[index] = analysis
     
     def queue_secondary_measure(self, outputname = 'example', resultsidentifiers = [], function = np.mean):
         op = {}
@@ -183,10 +183,10 @@ class Pincer():
                                 for result in resultdict.keys():
                                     self.results.loc[index,(name,result)] = resultdict[result]
             if report == True: print('Calculating Secondary Measures')
-            for op in self.secondary_ops_queue:
+            """for op in self.secondary_ops_queue:
                 features = [self.results[*i] for i in op['inputIDs']]
                 featureframe = pandas.concat(features,axis = 1)
-                self.results['SecondaryOutputs',op['outputname']] = featureframe.apply(op['func'], axis = 1)
+                self.results['SecondaryOutputs',op['outputname']] = featureframe.apply(op['func'], axis = 1)"""
             if report == True: print('Calculating Animalwise Measures!')
             self.animalresults = self.results.groupby(level=0,axis=0).mean()
             print('Done!')

@@ -2,4 +2,4 @@
 *.abf
 MM/
 __pycache__
-.spyproject/
+.spyproject

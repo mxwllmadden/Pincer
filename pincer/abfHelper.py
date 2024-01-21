@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov 22 12:42:56 2023
-
-@author: mbmad
+This module contains the PincerABF class, which inherits from and adds some
+additional functionality to pyabf.ABF. It also contains some minor functions
+to aid organization and processing of ABF file headers.
 """
 import pyabf
 

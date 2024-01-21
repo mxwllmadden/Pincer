@@ -9,6 +9,7 @@ import pincer.analysis_base as ban
 import pincer.analyses.utils as util
 import statistics as sts
 import numpy as np
+import scipy.optimize
 
 class Current_Basic_Rheoramp(ban.PincerAnalysis):
     def __init__(self, apthreshold = -20, binning = 0):
@@ -75,7 +76,7 @@ class Current_Steps_MaxFiring(ban.PincerAnalysis):
         return results
     
 class Voltage_Step_CheckSeal(ban.PincerAnalysis):
-    def __init__(self,baseline,region,stepsize_mV = 5):
+    def __init__(self,baseline,region,stepsize_mV = 5,mode='curvefit'):
         self.baseline = util.confirmROI(baseline)
         self.region = util.confirmROI(region)
         assert type(stepsize_mV) == int, 'stepsize_mV must be int'
@@ -94,4 +95,8 @@ class Voltage_Step_CheckSeal(ban.PincerAnalysis):
             abf.setSweep(i)
             trace = abf.sweepY
             #filtering the trace should isolate a fittable curve
+            trace = reg.filt(trace) #Filter region
+            trace = trace[np.argmax(trace):] #remove beginning rising phase
+            
+            #Perform Fit
             

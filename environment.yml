@@ -7,7 +7,6 @@ dependencies:
   - matplotlib
   - numpy
   - pandas
-  - pillow
   - pip
   - python=3.11
   - yaml

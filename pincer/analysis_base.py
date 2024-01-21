@@ -1,51 +1,78 @@
 # -*- coding: utf-8 -*-
 """
-Contains various managers and parent classes for expandable plugin system.
+Contains various managers and parent classes for Pincer's expandable plugin 
+system. While this is less useful when manually writing scripts or performing
+operations via CLI, it sets the groundwork for a future GUI interface for Pincer.
 
 """
-
-class StatsManager():
+    
+class PincerAnalysis():
+    """
+    Manager/parent class for all pincer analyses. Records all subclasses in
+    _registry. Contains class methods for reporting subclasses (specific analyses).
+    """
     _registry = {}
-    def __init__(self):
-        pass
-    
-    def make(self,name,**kwargs):
-        return self._registry[name](**kwargs)
-    
-    def report(self):
-        print('Available Comparisons:')
-        print('-------------------')
-        for i in self._registry:
-            print(i)
-
-class AnalysisManager():
-    _registry = {}
-    def __init__(self):
-        pass
-    
-    def make(self,name,**kwargs):
-        return self._registry[name](**kwargs)
-    
-    def report(self):
-        print('Available Analyses:')
-        print('-------------------')
-        for i in self._registry:
-            print(i)
-            
-class PincerComparison():
     def __init_subclass__(cls,**kwargs):
+        """
+        DO NOT EDIT. Registers every instance of a subclass in _registry
+
+        Parameters
+        ----------
+        **kwargs : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         super().__init_subclass__(**kwargs)
-        StatsManager._registry[cls.__name__] = cls
+        cls._registry[cls.__name__] = cls
         
-    def run(self, *series):
+    def run(self, ABF):
+        """
+        This method should be overwritten in all subclasses. Is called by
+        pincer.main.Pincer when processing abf files.
+
+        Parameters
+        ----------
+        ABF : PincerABF
+            DESCRIPTION.
+
+        Returns
+        -------
+        dict
+            Dictionary of results where all keys are result labels and values are
+            the result value.
+
+        """
         print('Warning! Missing Run Method!')
         return {'ERROR1':1,'ERROR2':2}
     
-class PincerAnalysis():
-    def __init_subclass__(cls,**kwargs):        
-        super().__init_subclass__(**kwargs)
-        AnalysisManager._registry[cls.__name__] = cls
-        
-    def run(self, ABF):
-        print('Warning! Missing Run Method!')
-        return {'ERROR1':1,'ERROR2':2}   
+    @classmethod
+    def make(cls,name,**kwargs):
+        """
+        Create an instance of the subclass with a given set of keyword arguments
+
+        Parameters
+        ----------
+        name : str
+            name of the analysis function.
+        **kwargs : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        object
+            Instance of an analysis class.
+
+        """
+        return cls._registry[name](**kwargs)
+    
+    @classmethod
+    def report(cls):
+        """Simple reporter of all analyses within _registry"""
+        print('Available Analyses:')
+        print('-------------------')
+        for i in cls._registry:
+            print(i)

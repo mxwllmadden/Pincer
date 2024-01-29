@@ -7,7 +7,8 @@ to aid organization and processing of ABF file headers.
 import pyabf
 
 class PincerABF(pyabf.ABF):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, epochcompensation : bool = True, **kwargs):
+        self.epochcompensation = epochcompensation
         super().__init__(*args,**kwargs)
         
         #Determine Header Properties
@@ -23,6 +24,22 @@ class PincerABF(pyabf.ABF):
         #Create additional properties for ease of access
         self.timeofday = self.abfDateTime.time()
         self.timeofday_str = self.abfDateTime.strftime('%H:%M')
+        
+    def setSweep(self, sweepNumber):
+        """
+        pClamp has a nasty habit of adding extra samples prior to initiating an
+        Epoch, this removes those samples, aligning the beginning of the sweep
+        to the beginning of the Epoch.
+        
+        You can access the unaltered sweep by using the setSweepFull method.
+        """
+        super().setSweep(sweepNumber)
+        if self.epochcompensation == True:
+            self.sweepY = self.sweepY[len(self.sweepY)//64:]
+    
+    def setSweepFull(self, sweepNumber):
+        super().setSweep(sweepNumber)
+        
 
 def strlist2list(f_string : str):
     assert '[' in f_string and ']' in f_string
@@ -33,6 +50,6 @@ def strlist2list(f_string : str):
         
 if __name__ == '__main__':
     x = PincerABF(r'C:\Users\mbmad\OneDrive - University of Maryland School of Medicine\Documents\MATHURLAB DATA AND PROJECTS\Patch Data Archive\Data\23n17080.abf')
-    z = x.headerProp
+    z = x.head
     print(z)
     

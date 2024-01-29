@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jan 12 16:40:33 2024
-
-@author: mbmad
+Analysis Script Example for Paired Pulse Analysis
 """
 
 # import pincer, as well as the specific analysis we want to use

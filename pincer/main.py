@@ -8,9 +8,7 @@ Maxwell Madden
 
 import pandas, numpy as np
 from pathlib import Path, PurePath
-from pincer.analysis_base import AnalysisManager
 from pincer.abfHelper import PincerABF
-from pincer.analysis_base import StatsManager
 
 class ROI():
     """
@@ -184,14 +182,6 @@ class ROI():
         self._makefriendlywith(new)
         result = self.region + new.region
         return ROI(result, unit = self.unit)
-    
-    def __sub__(self,new):
-        """
-        To be added, should produce the subtraction of the second ROI from the
-        first.
-
-        """
-        pass
     
     def __repr__(self):
         return 'Pincer Range of Interest (ROI) including ' + ' '.join(str(x) for x in self.region).replace('(','[') + ' in unit (' + self.unit + ')'    
@@ -435,14 +425,16 @@ class Pincer():
 
         Parameters
         ----------
-        daycode : TYPE
-            DESCRIPTION.
-        index : TYPE
-            DESCRIPTION.
+        daycode : str
+            First portion of a given filename. The portion Clampex uses to indicate
+            the date of recording in YYMDD format.
+        index : str
+            The portion of a filename that indicates the number of the recording
+            within a given day, counts from 0.
 
         Returns
         -------
-        TYPE
+        str
             DESCRIPTION.
 
         """

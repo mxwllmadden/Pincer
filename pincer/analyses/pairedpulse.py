@@ -14,7 +14,9 @@ import numpy as np
 
 class PairedPulse(ban.PincerAnalysis):
     """
-    Pairedpulse Analysis: Paired Pulses
+    Pairedpulse Analysis: A Paired Pulse Protocol contains two stimulations in
+    close temporal proximity, followed by a small voltage step to serve as a 
+    check of the changing quality of the access resistance into the cell.
     """
     def __init__(self, baseline1, pulseregion1, pulseregion2, baseline2, sealtestregion, binsize = 1):
         """

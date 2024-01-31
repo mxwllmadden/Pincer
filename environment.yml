@@ -1,4 +1,4 @@
-name: pincerenv
+name: pincerprojects
 channels:
   - anaconda
   - conda-forge
@@ -9,6 +9,7 @@ dependencies:
   - pandas
   - pip
   - python=3.11
+  - spyder-kernels>=2.4
   - yaml
   - pip:
       - pyabf

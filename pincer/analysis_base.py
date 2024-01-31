@@ -3,7 +3,6 @@
 Contains various managers and parent classes for Pincer's expandable plugin 
 system. While this is less useful when manually writing scripts or performing
 operations via CLI, it sets the groundwork for a future GUI interface for Pincer.
-
 """
     
 class PincerAnalysis():
@@ -14,7 +13,8 @@ class PincerAnalysis():
     _registry = {}
     def __init_subclass__(cls,**kwargs):
         """
-        DO NOT EDIT. Registers every instance of a subclass in _registry
+        DO NOT EDIT. Registers every instance of a subclass in _registry.
+        This allows for dynamic registering of analyses for an eventual GUI.
 
         Parameters
         ----------

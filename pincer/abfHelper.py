@@ -50,6 +50,6 @@ def strlist2list(f_string : str):
         
 if __name__ == '__main__':
     x = PincerABF(r'C:\Users\mbmad\OneDrive - University of Maryland School of Medicine\Documents\MATHURLAB DATA AND PROJECTS\Patch Data Archive\Data\23n17080.abf')
-    z = x.head
+    z = x.headerText
     print(z)
     

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Main Pincer Module
-Contains primary Pincer classes ROI and Pincer
+Contains primary Pincer classes ROI and Pincer.
 
 Maxwell Madden
 """
@@ -378,7 +378,9 @@ class Pincer():
         go = True
         if check == True:
             go = self.check()
-        if go == True:
+        if go == False:
+            print('process aborted due to failed check')
+        else:
             print('This may take a while...')
             for analysis in self.analysis_queue.keys():
                 if report == True: print('Performing '+ type(self.analysis_queue[analysis]).__name__ + 'analysis')
@@ -409,8 +411,15 @@ class Pincer():
             if report == True: print('Calculating Animalwise Measures!')
             self.animalresults = self.results.groupby(level=0,axis=0).mean()
             print('Done!')
-        else:
-            print('Processing aborted due to reported failed check')
+            
+    def checkfiles(self):
+        pass
+    
+    def _run_analysis(self):
+        pass
+    
+    def _iterate_func_over_analysis_index(self):
+        pass
         
     def cmbABFnm(self,daycode,index):
         """

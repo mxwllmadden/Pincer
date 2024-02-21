@@ -36,8 +36,14 @@ class CRACM_Current_LightPulse(ban.PincerAnalysis):
         """
         self.baseline = baseline
         self.lightpulsespertrace =lightpulsespertrace
-        self.an_apperlp = base.CountThresholdEvents(threshold = -20, direction = 1, binning = 0)
-        self.an_auc = base.AreaUnderCurve(baseline=baseline,direction=1,binning=0)
+        self.an_apperlp = base.CountThresholdEvents(
+            threshold = -20, 
+            direction = 1, 
+            binning = 0)
+        self.an_auc = base.AreaUnderCurve(
+            baseline=baseline,
+            direction=1,
+            binning=0)
     def run(self,abf):
         """
         Takes an abf file and finds AUC and APs/LP within the trace.
@@ -55,7 +61,7 @@ class CRACM_Current_LightPulse(ban.PincerAnalysis):
         """
         AUCResults = self.an_auc.run(abf)
         APLP = self.an_apperlp.run(abf)
-        APLP = {k:(v/(abf.sweepNumber*self.lightpulsespertrace)) for k, v in APLP.items()}
+        APLP = {k:(v/(abf.sweepCount*self.lightpulsespertrace)) for k, v in APLP.items()}
         return AUCResults | APLP
     
 

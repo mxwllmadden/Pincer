@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 11 15:16:45 2024
+Should contain basic operations that can be built upon by other analysis classes
 
-@author: mbmad
+IE: Peak detection/Area Under the Curve/etc.
 """
 
 from pincer import ROI

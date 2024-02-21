@@ -1,4 +1,4 @@
-name: pincerprojects
+name: pincerenv
 channels:
   - anaconda
   - conda-forge
@@ -6,10 +6,12 @@ channels:
 dependencies:
   - matplotlib
   - numpy
+  - openpyxl
   - pandas
   - pip
   - python=3.11
   - spyder-kernels>=2.4
+  - scipy
   - yaml
   - pip:
       - pyabf

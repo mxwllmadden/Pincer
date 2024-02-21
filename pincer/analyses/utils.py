@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Utility functions for pincer analyses
+Utility functions for pincer analyses. Will likely be merged with 
+pincer.analyses.basic or analysis_base.pinceranalysis in the future
 """
 import numpy as np
 import statistics as sts
@@ -135,8 +136,10 @@ def reglabel(sweep):
         1D integer array.
 
     """
-    assert isinstance(sweep, np.ndarray) and sweep.ndim == 1, 'sweep is not a 1-d numpy array'
-    assert sweep.dtype == bool, 'sweep dtype is not boolean'
+    if not (isinstance(sweep, np.ndarray) and sweep.ndim == 1):
+        raise AttributeError('sweep must be a 1-d numpy array')
+    if not sweep.dtype == bool:
+        raise AttributeError('sweep dtype is not boolean')
     count = 0
     state = False
     sweepout = np.empty(len(sweep))
@@ -194,14 +197,12 @@ def confirmROI(value):
     -------
     None or ROI
         Successfully created ROI, original ROI, or None.
-
     """
-    if type(value) == ROI:
+    if isinstance(value, ROI) or value is None:
         return value
     else:
-        assert type(value) == tuple, 'input must be tuple, None, or ROI'
-        assert len(value) == 2, 'tuple must have length 2'
-        assert all(type(i) == int for i in value)
+        if not (isinstance(value, tuple) and len(value) == 2 and all(type(i) == int for i in value)):
+            raise AttributeError('Input must be a length 2 tuple of ints, None, or ROI')
         return ROI(value)
 
 

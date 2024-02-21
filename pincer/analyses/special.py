@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jan 11 16:09:24 2024
-
-@author: mbmad
+Contains commonly used analyses that are not generalizable across many different
+contexts. These analyses are usually not utilized by other analysis classes.
 """
 
 import pincer.analysis_base as ban
@@ -16,6 +15,7 @@ class Current_Basic_Rheoramp(ban.PincerAnalysis):
         assert type(apthreshold) == float or type(apthreshold) == int, 'apthreshold must be int or float'
         assert type(binning) == int and binning >= 0, 'binning must be int >= 0'
         self.apthreshold = apthreshold
+        self.binning = binning
     def run (self,abf):
         #Create results and define working variables
         results = {}
@@ -28,7 +28,7 @@ class Current_Basic_Rheoramp(ban.PincerAnalysis):
             trace = abf.sweepY
             
             #perform required calculations
-            apindexs = ban.detectAP(trace)
+            apindexs = util.detectEvents(trace)
             if len(apindexs) > 0:
                 apindexs = list(apindexs)
                 apindexs.sort()

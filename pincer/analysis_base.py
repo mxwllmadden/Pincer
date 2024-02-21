@@ -4,7 +4,12 @@ Contains various managers and parent classes for Pincer's expandable plugin
 system. While this is less useful when manually writing scripts or performing
 operations via CLI, it sets the groundwork for a future GUI interface for Pincer.
 """
-    
+
+import numpy as np
+
+class MissingAnalysisMethodError(Exception):
+    pass
+
 class PincerAnalysis():
     """
     Manager/parent class for all pincer analyses. Records all subclasses in
@@ -46,8 +51,13 @@ class PincerAnalysis():
             the result value.
 
         """
-        print('Warning! Missing Run Method!')
-        return {'ERROR1':1,'ERROR2':2}
+        raise MissingAnalysisMethodError(f'"{self.__class__.__name__}.run(ABF)" is missing')
+    
+    def secondaryops(self):
+        return None
+    
+    def animalwiseop(self):
+        return np.sum
     
     @classmethod
     def make(cls,name,**kwargs):

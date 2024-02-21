@@ -49,10 +49,23 @@ class PairedPulse(ban.PincerAnalysis):
         None.
 
         """
-        self.an_pulse1 = base.PeakMagnitude(region=pulseregion1,baseline=baseline1,direction=-1,binning=1)
-        self.an_pulse2 = base.PeakMagnitude(region=pulseregion2,baseline=baseline1,direction=-1,binning=1)
-        self.an_seal = base.PeakMagnitude(region=sealtestregion,baseline=baseline2,direction=-1,binning=1)
+        self.an_pulse1 = base.PeakMagnitude(
+            region=pulseregion1,
+            baseline=baseline1,
+            direction=-1,
+            binning=1)
+        self.an_pulse2 = base.PeakMagnitude(
+            region=pulseregion2,
+            baseline=baseline1,
+            direction=-1,
+            binning=1)
+        self.an_seal = base.PeakMagnitude(
+            region=sealtestregion,
+            baseline=baseline2,
+            direction=-1,
+            binning=1)
         self.binning = binsize
+        
     def run(self,abf):
         """
         Takes an abf file and runs paired pulse analysis.

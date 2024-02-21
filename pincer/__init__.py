@@ -5,5 +5,5 @@ be imported manually.
 """
 
 from pincer.main import Pincer
-from pincer.main import PincerABF
+from pincer.abfHelper import PincerABF
 from pincer.main import ROI

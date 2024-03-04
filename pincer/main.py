@@ -469,4 +469,9 @@ class Pincer():
         i = i.partition('.')[0]
         i = i.rjust(self.padfilename,'0')
         return d + i.zfill(self.padfilename) + '.abf'
+    
+    def getABF(self,file):
+        filepath = PurePath(self.source, Path(file))
+        abf = PincerABF(str(filepath))
+        return abf
         

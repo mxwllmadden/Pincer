@@ -14,7 +14,7 @@ class MultiAnalysis:
     two being writing custom analyses, or by putting the file in the celldex
     twice and listing two different analysis indexes.
     """
-    def __init__(self, analyses : dict):
+    def __init__(self, *analyses):
         """
         Combine multiple analyses.
 
@@ -28,10 +28,15 @@ class MultiAnalysis:
         None.
 
         """
-        pass
+        self.analyses = analyses
     
     def run(self,abf):
-        pass
+        results = []
+        for an in self.analyses:
+            results.append(an.run(abf))
+        results = {k: v for d in results for k, v in d.items()}
+        return results
+            
     
 class SuppressOutput:
     """

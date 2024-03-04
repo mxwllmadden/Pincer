@@ -176,6 +176,7 @@ def binning(values : list, binning, func):
         List of binned values.
 
     """
+    if values == []: return
     binnedvalues = []
     if binning == 0: binnedvalues.append(func(values))
     else: binnedvalues = [func(x) for x in zip(*[iter(values)] * binning)]

@@ -42,7 +42,9 @@ class Current_Basic_Rheoramp(ban.PincerAnalysis):
         apthresh = util.binning(apthresh, self.binning, sts.mean)
        
         #setup results dictionary and return
-        results = {'AP Threshold '+str(i)+' (mV)':apthresh[i] for i in range(len(apthresh))}
+        if apthresh is None:
+            return {}
+        results = {'AP Threshold '+str(i)+' (mV)':apthresh[i] for i, _ in enumerate(apthresh)}
         return results
     
 class Voltage_Step_CheckSeal(ban.PincerAnalysis):

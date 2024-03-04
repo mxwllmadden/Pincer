@@ -6,6 +6,7 @@ operations via CLI, it sets the groundwork for a future GUI interface for Pincer
 """
 
 import numpy as np
+from dataclasses import dataclass
 
 class MissingAnalysisMethodError(Exception):
     pass
@@ -53,12 +54,6 @@ class PincerAnalysis():
         """
         raise MissingAnalysisMethodError(f'"{self.__class__.__name__}.run(ABF)" is missing')
     
-    def secondaryops(self):
-        return None
-    
-    def animalwiseop(self):
-        return np.sum
-    
     @classmethod
     def make(cls,name,**kwargs):
         """
@@ -86,3 +81,4 @@ class PincerAnalysis():
         print('-------------------')
         for i in cls._registry:
             print(i)
+        
